@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <title>Reto del Saber · Sushi vs Hot-Cakes</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    /* ===== RESET Y BASE ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0a0e17;
+      color: #f0f4ff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      background-image: url('https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?q=80&w=2070&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(10,14,23,0.7);
+      backdrop-filter: blur(4px);
+      z-index: 0;
+    }
+    .game-container {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      width: 100%;
+      background: rgba(20,30,45,0.8);
+      backdrop-filter: blur(16px);
+      border-radius: 50px;
+      padding: 30px 25px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+      transition: all 0.3s;
+    }
+
+    /* ===== HEADER ===== */
+    .game-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .game-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .game-title i { color: #fbbf24; }
+
+    .game-stats {
+      display: flex;
+      gap: 15px;
+      font-size: 0.85rem;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 16px;
+      border-radius: 40px;
+      border: 1px solid rgba(255,255,255,0.05);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .game-stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .game-stats .score { color: #60a5fa; font-weight: 700; }
+    .game-stats .lives { color: #f87171; font-weight: 700; }
+    .game-stats .timer { color: #fbbf24; font-weight: 700; }
+    /* ===== CONTADOR DE INTENTOS MEJORADO ===== */
+    .attempts-counter {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      transition: all 0.3s;
+      padding: 2px 10px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .attempts-counter .attempts-icon {
+      font-size: 1.1rem;
+      transition: transform 0.4s ease;
+    }
+    .attempts-counter .attempts-number {
+      font-size: 1rem;
+      min-width: 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    /* Colores según cantidad */
+    .attempts-counter.level-3 { border-color: rgba(52,211,153,0.4); color: #34d399; }
+    .attempts-counter.level-2 { border-color: rgba(251,191,36,0.4); color: #fbbf24; }
+    .attempts-counter.level-1 { border-color: rgba(251,146,60,0.4); color: #fb923c; animation: pulseAttempt 0.8s infinite alternate; }
+    .attempts-counter.level-0 { border-color: rgba(248,113,113,0.5); color: #f87171; animation: pulseAttempt 0.5s infinite alternate; background: rgba(248,113,113,0.1); }
+    @keyframes pulseAttempt {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.05); opacity: 1; }
+    }
+    /* Animación de cambio (pop) */
+    .attempts-counter.pop {
+      animation: popAttempt 0.5s ease;
+    }
+    @keyframes popAttempt {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.3); }
+      60% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+
+    /* ===== TEMPORIZADOR CON CÍRCULO SVG ===== */
+    .timer-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      margin: 0 4px;
+    }
+    .timer-wrapper svg {
+      transform: rotate(-90deg);
+      width: 48px;
+      height: 48px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .timer-wrapper .timer-bg {
+      fill: none;
+      stroke: rgba(255,255,255,0.08);
+      stroke-width: 4;
+    }
+    .timer-wrapper .timer-progress {
+      fill: none;
+      stroke: #fbbf24;
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.5s ease, stroke 0.5s;
+    }
+    .timer-wrapper .timer-text {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #f0f4ff;
+      z-index: 2;
+      line-height: 1;
+    }
+    .timer-wrapper.warning .timer-progress {
+      stroke: #f87171;
+      animation: pulseStroke 0.8s infinite alternate;
+    }
+    .timer-wrapper.warning .timer-text {
+      color: #f87171;
+      animation: pulseText 0.8s infinite alternate;
+    }
+    @keyframes pulseStroke {
+      0% { stroke: #f87171; opacity: 0.7; }
+      100% { stroke: #ef4444; opacity: 1; }
+    }
+    @keyframes pulseText {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.1); opacity: 1; }
+    }
+
+    /* ===== PREGUNTAS ===== */
+    .question-box {
+      background: rgba(0,0,0,0.3);
+      border-radius: 30px;
+      padding: 25px 20px;
+      margin: 15px 0 20px;
+      min-height: 200px;
+      border: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .question-box .q-text {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      font-weight: 600;
+      margin-bottom: 18px;
+      color: #f1f5f9;
+      line-height: 1.4;
+    }
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 480px) {
+      .options-grid { grid-template-columns: 1fr; gap: 10px; }
+    }
+    .option-btn {
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,255,255,0.1);
+      padding: 12px 16px;
+      border-radius: 40px;
+      color: #e2e8f0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .option-btn:hover:not(:disabled) {
+      background: rgba(79,156,247,0.15);
+      border-color: #4f9cf7;
+      transform: translateY(-2px);
+    }
+    .option-btn .opt-letter {
+      display: inline-block;
+      width: 26px; height: 26px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50%;
+      text-align: center;
+      line-height: 26px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      flex-shrink: 0;
+    }
+    .option-btn.correct {
+      background: rgba(52,211,153,0.25);
+      border-color: #34d399;
+      color: #34d399;
+    }
+    .option-btn.wrong {
+      background: rgba(248,113,113,0.25);
+      border-color: #f87171;
+      color: #f87171;
+    }
+    .option-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+
+    .game-feedback {
+      margin-top: 18px;
+      font-size: 1rem;
+      font-weight: 600;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-align: center;
+    }
+    .game-feedback .correct-fb { color: #34d399; }
+    .game-feedback .wrong-fb { color: #f87171; }
+
+    .game-controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+    .game-controls button {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 24px;
+      border-radius: 40px;
+      color: #f1f5f9;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .game-controls button:hover:not(:disabled) {
+      background: rgba(79,156,247,0.2);
+      border-color: #4f9cf7;
+    }
+    .game-controls button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    .game-controls .no-attempts-msg {
+      color: #f87171;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      background: rgba(248,113,113,0.1);
+      border-radius: 40px;
+      border: 1px solid rgba(248,113,113,0.2);
+      display: inline-block;
+    }
+
+    /* ===== RESULTADO (VICTORIA) ===== */
+    .game-result {
+      display: none;
+      margin-top: 20px;
+      padding: 25px 20px;
+      border-radius: 30px;
+      background: rgba(0,0,0,0.4);
+      border: 2px solid rgba(255,255,255,0.1);
+      text-align: center;
+    }
+    .game-result.show { display: block; animation: fadeUp 0.5s ease; }
+    .game-result h3 { font-size: 1.8rem; margin-bottom: 10px; }
+    .game-result .prize-box {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin: 15px 0;
+    }
+    .prize-box .prize-item {
+      background: rgba(255,255,255,0.05);
+      padding: 15px 25px;
+      border-radius: 30px;
+      border: 2px solid transparent;
+      transition: all 0.3s;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .prize-box .prize-item:hover { border-color: #fbbf24; background: rgba(251,191,36,0.1); transform: scale(1.05); }
+    .prize-box .prize-item.selected { border-color: #fbbf24; background: rgba(251,191,36,0.2); box-shadow: 0 0 40px rgba(251,191,36,0.2); }
+    .prize-emoji { font-size: 2.6rem; display: block; }
+    .btn-claim {
+      margin-top: 15px;
+      background: linear-gradient(135deg,#fbbf24,#f59e0b);
+      color: #0a0e17;
+      border: none;
+      padding: 12px 35px;
+      border-radius: 60px;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-claim:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(251,191,36,0.4); }
+    .btn-claim:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    #prizeConfirmation {
+      margin-top: 15px;
+      font-size: 1.1rem;
+      display: none;
+    }
+    #prizeConfirmation i { color: #34d399; margin-right: 8px; }
+    .result-attempts {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== CALAVERA EXPLOTANDO ===== */
+    .skull-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 9999;
+      pointer-events: none;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      animation: skullFadeIn 0.5s ease;
+    }
+    .skull-overlay.active {
+      display: flex;
+      pointer-events: auto;
+    }
+    @keyframes skullFadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .skull-content {
+      text-align: center;
+      color: #fff;
+      animation: skullExplode 1.5s ease forwards;
+    }
+    .skull-content .skull-emoji {
+      font-size: 7rem;
+      display: block;
+      animation: skullPulse 1s infinite alternate;
+      filter: drop-shadow(0 0 40px rgba(248,113,113,0.6));
+    }
+    .skull-content h2 {
+      font-size: 2.2rem;
+      margin-top: 10px;
+      color: #f87171;
+      text-shadow: 0 0 30px rgba(248,113,113,0.5);
+    }
+    .skull-content p {
+      font-size: 1.1rem;
+      color: #cbd5e1;
+      margin-top: 8px;
+    }
+    .skull-content .btn-restart {
+      margin-top: 20px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 12px 30px;
+      border-radius: 60px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      pointer-events: auto;
+      display: inline-block;
+    }
+    .skull-content .btn-restart:hover:not(:disabled) {
+      background: rgba(79,156,247,0.2);
+      border-color: #4f9cf7;
+    }
+    .skull-content .btn-restart:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .skull-content .no-attempts-msg {
+      color: #f87171;
+      font-size: 1rem;
+      margin-top: 10px;
+      background: rgba(248,113,113,0.15);
+      padding: 8px 20px;
+      border-radius: 40px;
+      display: inline-block;
+      border: 1px solid rgba(248,113,113,0.2);
+    }
+    @keyframes skullPulse {
+      0% { transform: scale(1) rotate(0deg); }
+      100% { transform: scale(1.08) rotate(3deg); }
+    }
+    @keyframes skullExplode {
+      0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+      50% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    /* Partículas de la explosión */
+    .skull-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 10000;
+      font-size: 2rem;
+      animation: particleFly 2s ease-out forwards;
+    }
+    @keyframes particleFly {
+      0% { transform: translate(0,0) scale(1) rotate(0deg); opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)) scale(0) rotate(720deg); opacity: 0; }
+    }
+
+    /* ===== ANIMACIÓN DE CORAZÓN ROTO ===== */
+    .heart-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      font-size: 1.6rem;
+      animation: heartBurst 1.2s ease-out forwards;
+    }
+    @keyframes heartBurst {
+      0% { transform: translate(0,0) scale(1) rotate(0deg); opacity: 1; }
+      100% { transform: translate(var(--hx), var(--hy)) scale(0.2) rotate(360deg); opacity: 0; }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 500px) {
+      .game-container { padding: 20px 15px; border-radius: 30px; }
+      .game-header { flex-direction: column; align-items: stretch; gap: 8px; }
+      .game-title { font-size: 1rem; justify-content: center; }
+      .game-stats { justify-content: center; font-size: 0.75rem; gap: 10px; padding: 6px 12px; }
+      .timer-wrapper { width: 38px; height: 38px; }
+      .timer-wrapper svg { width: 38px; height: 38px; }
+      .timer-wrapper .timer-text { font-size: 0.7rem; }
+      .question-box { padding: 18px 14px; min-height: 160px; }
+      .option-btn { padding: 10px 12px; font-size: 0.85rem; }
+      .skull-content .skull-emoji { font-size: 4.5rem; }
+      .skull-content h2 { font-size: 1.6rem; }
+      .attempts-counter .attempts-number { font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <!-- HEADER -->
+    <div class="game-header">
+      <div class="game-title"><i class="fas fa-gamepad"></i> Reto del Saber</div>
+      <div class="game-stats">
+        <span><i class="fas fa-star"></i> <span class="score" id="scoreDisplay">0</span></span>
+        <span><i class="fas fa-heart"></i> <span class="lives" id="livesDisplay">❤️❤️❤️</span></span>
+        <span class="timer-wrapper" id="timerWrapper">
+          <svg viewBox="0 0 48 48">
+            <circle class="timer-bg" cx="24" cy="24" r="20" />
+            <circle class="timer-progress" id="timerProgress" cx="24" cy="24" r="20" stroke-dasharray="125.6" stroke-dashoffset="0" />
+          </svg>
+          <span class="timer-text" id="timerText">5:00</span>
+        </span>
+        <span><i class="fas fa-question-circle"></i> <span id="questionCounter">1</span>/<span id="totalQuestions">10</span></span>
+        <!-- CONTADOR DE INTENTOS MEJORADO -->
+        <span class="attempts-counter level-3" id="attemptsCounter">
+          <i class="fas fa-redo-alt attempts-icon" id="attemptsIcon"></i>
+          <span class="attempts-number" id="attemptsNumber">3</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- PREGUNTA -->
+    <div class="question-box" id="questionBox">
+      <div class="q-text" id="questionText">Cargando pregunta...</div>
+      <div class="options-grid" id="optionsContainer"></div>
+      <div class="game-feedback" id="feedback"></div>
+    </div>
+
+    <!-- CONTROLES -->
+    <div class="game-controls">
+      <button id="nextQuestionBtn" disabled><i class="fas fa-arrow-right"></i> Siguiente</button>
+      <button id="resetGameBtn"><i class="fas fa-redo"></i> Reiniciar</button>
+    </div>
+
+    <!-- RESULTADO (victoria) -->
+    <div class="game-result" id="gameResult">
+      <h3 id="resultTitle">🎉 ¡Felicidades!</h3>
+      <p id="resultMessage">Elige tu recompensa:</p>
+      <div class="prize-box" id="prizeBox">
+        <div class="prize-item" data-prize="sushi"><span class="prize-emoji">🍣</span> Sushi</div>
+        <div class="prize-item" data-prize="hotcakes"><span class="prize-emoji">🥞</span> Hot-Cakes</div>
+      </div>
+      <button class="btn-claim" id="claimPrizeBtn"><i class="fas fa-gift"></i> Reclamar premio</button>
+      <div id="prizeConfirmation"><i class="fas fa-check-circle"></i> ¡Premio reclamado! 🎊</div>
+      <div class="result-attempts" id="resultAttempts"></div>
+    </div>
+  </div>
+
+  <!-- OVERLAY DE CALAVERA (pérdida) -->
+  <div class="skull-overlay" id="skullOverlay">
+    <div class="skull-content">
+      <span class="skull-emoji">💀</span>
+      <h2>¡Has perdido!</h2>
+      <p id="skullMessage">El tiempo se agotó o te quedaste sin vidas.</p>
+      <button class="btn-restart" id="skullRestartBtn"><i class="fas fa-redo"></i> Reintentar</button>
+      <div id="skullAttemptsMsg"></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // ===== PREGUNTAS =====
+      const questions = [
+        { question: '¿Qué nutriente es el principal responsable de proporcionar energía inmediata en el sushi?', options: ['Proteínas', 'Lípidos', 'Carbohidratos (almidón)', 'Vitaminas'], correct: 2 },
+        { question: '¿Cuál de los siguientes es un beneficio del omega-3 presente en el salmón?', options: ['Mejora la visión', 'Protege el corazón', 'Fortalece los huesos', 'Regula el azúcar'], correct: 1 },
+        { question: '¿Qué ingrediente de los hot-cakes aporta la mayor cantidad de fibra?', options: ['Plátano', 'Fresa', 'Avena', 'Yogurt'], correct: 2 },
+        { question: '¿Cuál es el principal mineral que aporta el alga nori del sushi?', options: ['Calcio', 'Hierro', 'Yodo', 'Potasio'], correct: 2 },
+        { question: '¿Qué vitamina es abundante en las fresas de los hot-cakes?', options: ['Vitamina A', 'Vitamina C', 'Vitamina D', 'Vitamina B12'], correct: 1 },
+        { question: '¿Qué problema puede causar una deficiencia de proteínas?', options: ['Piel seca', 'Fatiga', 'Debilidad muscular y bajada de defensas', 'Problemas de visión'], correct: 2 },
+        { question: '¿Cuál de estos platillos tiene mayor contenido de sodio?', options: ['Sushi', 'Hot-Cakes', 'Ambos tienen igual', 'Ninguno'], correct: 0 },
+        { question: '¿Qué función cumplen los lípidos en el organismo?', options: ['Dar energía inmediata', 'Formar membranas celulares y absorber vitaminas', 'Transportar oxígeno', 'Regular el sueño'], correct: 1 },
+        { question: '¿Qué ingrediente del sushi es una fuente de grasas monoinsaturadas saludables?', options: ['Arroz', 'Pepino', 'Aguacate', 'Alga nori'], correct: 2 },
+        { question: '¿Cuál es la principal diferencia en el contenido de fibra entre el sushi y los hot-cakes?', options: ['El sushi tiene más fibra', 'Los hot-cakes tienen el doble de fibra', 'Ambos tienen la misma cantidad', 'Ninguno tiene fibra'], correct: 1 }
+      ];
+
+      // ===== VARIABLES DE ESTADO =====
+      let shuffledQuestions = [];
+      let currentIndex = 0;
+      let score = 0;
+      let lives = 3;
+      const MAX_LIVES = 3;
+      let answered = false;
+      let gameActive = true;
+      let timeLeft = 300;
+      let timerInterval = null;
+      let timerSpeed = 1;
+      let attemptsLeft = 3; // 3 oportunidades
+
+      // Elementos DOM
+      const questionText = document.getElementById('questionText');
+      const optionsContainer = document.getElementById('optionsContainer');
+      const feedback = document.getElementById('feedback');
+      const scoreDisplay = document.getElementById('scoreDisplay');
+      const livesDisplay = document.getElementById('livesDisplay');
+      const timerText = document.getElementById('timerText');
+      const timerProgress = document.getElementById('timerProgress');
+      const timerWrapper = document.getElementById('timerWrapper');
+      const questionCounter = document.getElementById('questionCounter');
+      const totalQuestionsSpan = document.getElementById('totalQuestions');
+      const nextBtn = document.getElementById('nextQuestionBtn');
+      const resetBtn = document.getElementById('resetGameBtn');
+      const gameResult = document.getElementById('gameResult');
+      const resultTitle = document.getElementById('resultTitle');
+      const resultMessage = document.getElementById('resultMessage');
+      const prizeBox = document.getElementById('prizeBox');
+      const claimBtn = document.getElementById('claimPrizeBtn');
+      const prizeConfirmation = document.getElementById('prizeConfirmation');
+      const resultAttempts = document.getElementById('resultAttempts');
+      const skullOverlay = document.getElementById('skullOverlay');
+      const skullRestartBtn = document.getElementById('skullRestartBtn');
+      const skullMessage = document.getElementById('skullMessage');
+      const skullAttemptsMsg = document.getElementById('skullAttemptsMsg');
+      const attemptsCounter = document.getElementById('attemptsCounter');
+      const attemptsNumber = document.getElementById('attemptsNumber');
+      const attemptsIcon = document.getElementById('attemptsIcon');
+
+      totalQuestionsSpan.textContent = questions.length;
+
+      // ===== FUNCIONES =====
+      function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      // ===== ACTUALIZAR CONTADOR DE INTENTOS (con animación) =====
+      function updateAttemptsDisplay(animate = false) {
+        attemptsNumber.textContent = attemptsLeft;
+        // Eliminar clases de nivel y pop
+        attemptsCounter.classList.remove('level-3', 'level-2', 'level-1', 'level-0', 'pop');
+        // Añadir nivel según cantidad
+        if (attemptsLeft >= 3) {
+          attemptsCounter.classList.add('level-3');
+          attemptsIcon.className = 'fas fa-redo-alt attempts-icon';
+        } else if (attemptsLeft === 2) {
+          attemptsCounter.classList.add('level-2');
+          attemptsIcon.className = 'fas fa-redo-alt attempts-icon';
+        } else if (attemptsLeft === 1) {
+          attemptsCounter.classList.add('level-1');
+          attemptsIcon.className = 'fas fa-exclamation-triangle attempts-icon';
+        } else if (attemptsLeft === 0) {
+          attemptsCounter.classList.add('level-0');
+          attemptsIcon.className = 'fas fa-ban attempts-icon';
+        }
+        // Animación de pop si se solicita
+        if (animate) {
+          attemptsCounter.classList.add('pop');
+          setTimeout(() => attemptsCounter.classList.remove('pop'), 600);
+        }
+        // Actualizar botones de reinicio según intentos
+        if (attemptsLeft <= 0) {
+          resetBtn.disabled = true;
+          resetBtn.innerHTML = '<i class="fas fa-ban"></i> Sin intentos';
+          skullRestartBtn.disabled = true;
+          skullRestartBtn.style.display = 'none';
+          if (skullOverlay.classList.contains('active')) {
+            skullAttemptsMsg.innerHTML = '<span class="no-attempts-msg">⚠️ No te quedan oportunidades de reinicio</span>';
+          }
+        } else {
+          resetBtn.disabled = false;
+          resetBtn.innerHTML = '<i class="fas fa-redo"></i> Reiniciar';
+          skullRestartBtn.disabled = false;
+          skullRestartBtn.style.display = 'inline-block';
+        }
+      }
+
+      function updateStats() {
+        scoreDisplay.textContent = score;
+        // Corazones
+        let hearts = '';
+        for (let i = 0; i < lives; i++) hearts += '❤️';
+        for (let i = lives; i < MAX_LIVES; i++) hearts += '🖤';
+        livesDisplay.textContent = hearts;
+
+        // Velocidad del timer
+        timerSpeed = MAX_LIVES - lives + 1;
+        if (timerSpeed < 1) timerSpeed = 1;
+
+        // Tiempo
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
+        timerText.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+        // Círculo de progreso
+        const totalSeconds = 300;
+        const progress = timeLeft / totalSeconds;
+        const dashOffset = 125.6 * (1 - progress);
+        timerProgress.setAttribute('stroke-dashoffset', dashOffset);
+
+        if (timeLeft <= 30) {
+          timerWrapper.classList.add('warning');
+        } else {
+          timerWrapper.classList.remove('warning');
+        }
+
+        // Actualizar contador de intentos (sin animación al actualizar estadísticas)
+        updateAttemptsDisplay(false);
+      }
+
+      function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+          if (!gameActive) return;
+          timeLeft -= timerSpeed;
+          if (timeLeft < 0) timeLeft = 0;
+          updateStats();
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            gameActive = false;
+            showSkull('⏰ ¡Se acabó el tiempo!');
+          }
+        }, 1000);
+      }
+
+      function showQuestion() {
+        if (!gameActive) return;
+        if (currentIndex >= shuffledQuestions.length || lives <= 0) {
+          endGame();
+          return;
+        }
+        const q = shuffledQuestions[currentIndex];
+        questionText.textContent = q.question;
+        optionsContainer.innerHTML = '';
+        const letters = ['A', 'B', 'C', 'D'];
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn';
+          btn.innerHTML = `<span class="opt-letter">${letters[idx]}</span> ${opt}`;
+          btn.dataset.index = idx;
+          btn.addEventListener('click', () => handleAnswer(idx));
+          optionsContainer.appendChild(btn);
+        });
+        feedback.innerHTML = '';
+        feedback.className = 'game-feedback';
+        answered = false;
+        nextBtn.disabled = true;
+        questionCounter.textContent = currentIndex + 1;
+      }
+
+      function handleAnswer(selected) {
+        if (answered || !gameActive) return;
+        answered = true;
+        const q = shuffledQuestions[currentIndex];
+        const buttons = optionsContainer.querySelectorAll('.option-btn');
+        buttons.forEach((btn, idx) => {
+          btn.disabled = true;
+          if (idx === q.correct) btn.classList.add('correct');
+          else if (idx === selected && idx !== q.correct) btn.classList.add('wrong');
+        });
+
+        if (selected === q.correct) {
+          score++;
+          feedback.innerHTML = '<span class="correct-fb"><i class="fas fa-check-circle"></i> ¡Correcto! +1 punto</span>';
+        } else {
+          lives--;
+          triggerHeartBreak();
+          timeLeft = Math.max(0, timeLeft - 20);
+          feedback.innerHTML =
+            `<span class="wrong-fb"><i class="fas fa-times-circle"></i> Incorrecto. La respuesta era: ${q.options[q.correct]}</span>`;
+          timerSpeed = MAX_LIVES - lives + 1;
+          if (timerSpeed < 1) timerSpeed = 1;
+          updateStats();
+          if (lives <= 0) {
+            gameActive = false;
+            clearInterval(timerInterval);
+            timerInterval = null;
+            showSkull('💀 Te quedaste sin vidas');
+            return;
+          }
+        }
+        updateStats();
+        nextBtn.disabled = false;
+      }
+
+      function triggerHeartBreak() {
+        const emojis = ['💔', '❤️‍🔥', '💢', '💥'];
+        for (let i = 0; i < 20; i++) {
+          setTimeout(() => {
+            const el = document.createElement('div');
+            el.className = 'heart-particle';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            const x = window.innerWidth / 2 + (Math.random() - 0.5) * 200;
+            const y = window.innerHeight / 2 + (Math.random() - 0.5) * 150;
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            const hx = (Math.random() - 0.5) * 400;
+            const hy = (Math.random() - 0.5) * 400 - 100;
+            el.style.setProperty('--hx', hx + 'px');
+            el.style.setProperty('--hy', hy + 'px');
+            el.style.fontSize = (Math.random() * 1.5 + 1.2) + 'rem';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 1300);
+          }, i * 40);
+        }
+      }
+
+      function nextQuestion() {
+        if (nextBtn.disabled) return;
+        currentIndex++;
+        if (currentIndex >= shuffledQuestions.length || lives <= 0) {
+          endGame();
+        } else {
+          showQuestion();
+          nextBtn.disabled = true;
+        }
+      }
+
+      function endGame() {
+        gameActive = false;
+        clearInterval(timerInterval);
+        timerInterval = null;
+        gameResult.classList.add('show');
+        if (lives > 0 && currentIndex >= shuffledQuestions.length) {
+          resultTitle.textContent = '🎉 ¡Felicidades! Has completado el reto.';
+          resultMessage.textContent = 'Has demostrado ser un experto en nutrición. Elige tu recompensa:';
+          prizeBox.style.display = 'flex';
+          claimBtn.style.display = 'inline-block';
+          claimBtn.disabled = false;
+          prizeConfirmation.style.display = 'none';
+          resultAttempts.textContent = `Intentos restantes: ${attemptsLeft}`;
+        } else {
+          gameResult.classList.remove('show');
+        }
+        nextBtn.disabled = true;
+        updateStats();
+      }
+
+      // ===== CALAVERA EXPLOTANDO =====
+      function showSkull(message) {
+        skullOverlay.classList.add('active');
+        skullMessage.textContent = message || 'El tiempo se agotó o te quedaste sin vidas.';
+        // Mostrar estado de intentos dentro de la calavera
+        if (attemptsLeft > 0) {
+          skullAttemptsMsg.innerHTML = `<span style="color:#94a3b8;">Intentos restantes: ${attemptsLeft}</span>`;
+          skullRestartBtn.disabled = false;
+          skullRestartBtn.style.display = 'inline-block';
+        } else {
+          skullAttemptsMsg.innerHTML = '<span class="no-attempts-msg">⚠️ No te quedan oportunidades de reinicio</span>';
+          skullRestartBtn.disabled = true;
+          skullRestartBtn.style.display = 'none';
+        }
+        // Partículas
+        const emojis = ['💀', '☠️', '💥', '🔥', '💢', '⚡', '💫', '🌋'];
+        for (let i = 0; i < 60; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'skull-particle';
+          particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          const x = window.innerWidth / 2 + (Math.random() - 0.5) * 400;
+          const y = window.innerHeight / 2 + (Math.random() - 0.5) * 400;
+          particle.style.left = x + 'px';
+          particle.style.top = y + 'px';
+          const tx = (Math.random() - 0.5) * 800;
+          const ty = (Math.random() - 0.5) * 800;
+          particle.style.setProperty('--tx', tx + 'px');
+          particle.style.setProperty('--ty', ty + 'px');
+          particle.style.fontSize = (Math.random() * 2.5 + 1.5) + 'rem';
+          document.body.appendChild(particle);
+          setTimeout(() => particle.remove(), 2500);
+        }
+        updateStats(); // para refrescar contador de intentos
+      }
+
+      function hideSkull() {
+        skullOverlay.classList.remove('active');
+        document.querySelectorAll('.skull-particle').forEach(el => el.remove());
+      }
+
+      // ===== REINICIO (consume intento) =====
+      function resetGame() {
+        if (attemptsLeft <= 0) {
+          alert('No te quedan oportunidades de reinicio. ¡Juego terminado!');
+          return;
+        }
+        // Consumir un intento
+        attemptsLeft--;
+        // Animación de pop en el contador
+        updateAttemptsDisplay(true);
+
+        hideSkull();
+        clearInterval(timerInterval);
+        timerInterval = null;
+        shuffledQuestions = shuffleArray([...questions]);
+        currentIndex = 0;
+        score = 0;
+        lives = MAX_LIVES;
+        timeLeft = 300;
+        timerSpeed = 1;
+        gameActive = true;
+        answered = false;
+        gameResult.classList.remove('show');
+        prizeConfirmation.style.display = 'none';
+        claimBtn.disabled = false;
+        prizeBox.querySelectorAll('.prize-item').forEach(el => el.classList.remove('selected'));
+        selectedPrize = null;
+        updateStats();
+        showQuestion();
+        nextBtn.disabled = true;
+        startTimer();
+        timerWrapper.classList.remove('warning');
+        // Actualizar botones según intentos
+        if (attemptsLeft <= 0) {
+          resetBtn.disabled = true;
+          resetBtn.innerHTML = '<i class="fas fa-ban"></i> Sin intentos';
+          skullRestartBtn.disabled = true;
+          skullRestartBtn.style.display = 'none';
+        } else {
+          resetBtn.disabled = false;
+          resetBtn.innerHTML = '<i class="fas fa-redo"></i> Reiniciar';
+          skullRestartBtn.disabled = false;
+          skullRestartBtn.style.display = 'inline-block';
+        }
+        updateStats();
+      }
+
+      // ===== RECOMPENSA =====
+      let selectedPrize = null;
+      prizeBox.querySelectorAll('.prize-item').forEach(item => {
+        item.addEventListener('click', function() {
+          prizeBox.querySelectorAll('.prize-item').forEach(el => el.classList.remove('selected'));
+          this.classList.add('selected');
+          selectedPrize = this.dataset.prize;
+        });
+      });
+
+      claimBtn.addEventListener('click', function() {
+        if (!selectedPrize) {
+          alert('Primero selecciona tu premio (Sushi o Hot-Cakes)');
+          return;
+        }
+        const emoji = selectedPrize === 'sushi' ? '🍣' : '🥞';
+        const name = selectedPrize === 'sushi' ? 'Sushi' : 'Hot-Cakes';
+        prizeConfirmation.innerHTML =
+          `<i class="fas fa-check-circle"></i> ¡Has reclamado tu porción de ${emoji} ${name}! <span style="display:block; font-size:0.9rem; color:#94a3b8;">Disfruta tu recompensa saludable.</span>`;
+        prizeConfirmation.style.display = 'block';
+        claimBtn.disabled = true;
+        launchCelebration();
+        resultAttempts.textContent = `Intentos restantes: ${attemptsLeft}`;
+      });
+
+      function launchCelebration() {
+        const emojis = ['🎉', '🍣', '🥞', '✨', '🌟', '🎊', '💫'];
+        for (let i = 0; i < 30; i++) {
+          setTimeout(() => {
+            const span = document.createElement('span');
+            span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            span.style.position = 'fixed';
+            span.style.left = Math.random() * 100 + 'vw';
+            span.style.top = '-10%';
+            span.style.fontSize = (Math.random() * 2 + 1.5) + 'rem';
+            span.style.pointerEvents = 'none';
+            span.style.zIndex = '9999';
+            span.style.transition = 'all 3s ease-out';
+            document.body.appendChild(span);
+            requestAnimationFrame(() => {
+              span.style.top = (Math.random() * 80 + 10) + 'vh';
+              span.style.opacity = '0';
+            });
+            setTimeout(() => span.remove(), 3000);
+          }, i * 100);
+        }
+      }
+
+      // ===== INICIALIZACIÓN =====
+      // No consume intento al cargar
+      function initGame() {
+        shuffledQuestions = shuffleArray([...questions]);
+        currentIndex = 0;
+        score = 0;
+        lives = MAX_LIVES;
+        timeLeft = 300;
+        timerSpeed = 1;
+        gameActive = true;
+        answered = false;
+        gameResult.classList.remove('show');
+        prizeConfirmation.style.display = 'none';
+        claimBtn.disabled = false;
+        prizeBox.querySelectorAll('.prize-item').forEach(el => el.classList.remove('selected'));
+        selectedPrize = null;
+        // Intentos se mantienen (no se consumen)
+        updateStats();
+        showQuestion();
+        nextBtn.disabled = true;
+        startTimer();
+        timerWrapper.classList.remove('warning');
+        resetBtn.disabled = false;
+        resetBtn.innerHTML = '<i class="fas fa-redo"></i> Reiniciar';
+        updateAttemptsDisplay(false);
+      }
+
+      // ===== EVENT LISTENERS =====
+      nextBtn.addEventListener('click', nextQuestion);
+      resetBtn.addEventListener('click', resetGame);
+      skullRestartBtn.addEventListener('click', resetGame);
+
+      // Iniciar el juego sin consumir intento
+      initGame();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <title>Sushi vs Hot-Cakes · Presentación</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    /* ===== RESET ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0a0e17;
+      color: #f0f4ff;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    /* ===== FONDO ===== */
+    .bg-image {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -2;
+      background: url('https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+      filter: brightness(0.35) saturate(1.2);
+    }
+    .bg-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at 30% 40%, rgba(79,156,247,0.25), rgba(251,191,36,0.15) 80%);
+      pointer-events: none;
+    }
+    /* ===== FORMAS FLOTANTES ===== */
+    .floating-shapes {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.10;
+      animation: floatShape 20s infinite alternate ease-in-out;
+    }
+    .shape:nth-child(1) { width: 300px; height: 300px; background: radial-gradient(circle,#4f9cf7,transparent); top:-5%; left:-5%; animation-duration:25s; }
+    .shape:nth-child(2) { width: 400px; height: 400px; background: radial-gradient(circle,#fbbf24,transparent); bottom:-10%; right:-10%; animation-duration:30s; animation-delay:-5s; }
+    .shape:nth-child(3) { width: 200px; height: 200px; background: radial-gradient(circle,#f472b6,transparent); top:50%; left:70%; animation-duration:18s; animation-delay:-10s; }
+    .shape:nth-child(4) { width: 150px; height: 150px; background: radial-gradient(circle,#34d399,transparent); bottom:20%; left:10%; animation-duration:22s; animation-delay:-3s; }
+    .shape.tri {
+      border-radius: 0;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      background: linear-gradient(135deg,#a78bfa,transparent);
+      width: 180px; height: 180px; top:15%; right:5%;
+      animation-duration:28s; opacity:0.06;
+    }
+    @keyframes floatShape {
+      0% { transform: translate(0,0) scale(1) rotate(0deg); }
+      33% { transform: translate(30px,-40px) scale(1.1) rotate(5deg); }
+      66% { transform: translate(-20px,20px) scale(0.9) rotate(-3deg); }
+      100% { transform: translate(10px,-10px) scale(1.05) rotate(2deg); }
+    }
+    /* ===== PARTÍCULAS ===== */
+    #particles-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    /* ===== CONTENEDOR ===== */
+    .main-wrapper {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 20px 40px;
+    }
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 30px 20px;
+      backdrop-filter: blur(2px);
+      border-radius: 60px;
+      margin-bottom: 30px;
+      transition: transform 0.1s ease-out;
+    }
+    .hero-badge {
+      background: rgba(79,156,247,0.25);
+      backdrop-filter: blur(8px);
+      padding: 10px 28px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid rgba(79,156,247,0.5);
+      color: #a0c4ff;
+      margin-bottom: 25px;
+      box-shadow: 0 0 30px rgba(79,156,247,0.25);
+      text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 12vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 15px;
+      text-shadow: 0 0 60px rgba(79,156,247,0.4), 0 4px 20px rgba(0,0,0,0.8);
+    }
+    .hero h1 .highlight-sushi { background: linear-gradient(135deg,#60a5fa,#3b82f6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .hero h1 .highlight-hot { background: linear-gradient(135deg,#fbbf24,#f59e0b); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .hero p {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      max-width: 700px;
+      color: #e8edf5;
+      margin-bottom: 25px;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.7);
+      font-weight: 400;
+      padding: 0 10px;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px 30px;
+      font-size: 1.05rem;
+      color: #c8d6e5;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9);
+    }
+    .hero-meta i { color: #60a5fa; margin-right: 6px; }
+    .hero-meta strong { color: #ffffff; font-weight: 700; }
+    .btn-interact {
+      margin-top: 30px;
+      background: linear-gradient(135deg,#4f9cf7,#7c3aed);
+      border: none;
+      padding: 14px 32px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 40px rgba(79,156,247,0.5);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+    }
+    .btn-interact:hover { transform: scale(1.05) translateY(-4px); box-shadow: 0 0 60px rgba(79,156,247,0.8); }
+    .btn-interact:active { transform: scale(0.95); }
+
+    /* ===== SECCIONES ===== */
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      text-align: center;
+      margin: 50px 0 15px;
+      text-shadow: 0 0 40px rgba(79,156,247,0.25), 0 4px 20px rgba(0,0,0,0.8);
+      color: #f0f4ff;
+    }
+    .section-sub {
+      text-align: center;
+      color: #d0dcee;
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      margin-bottom: 35px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9);
+      font-weight: 400;
+    }
+    /* ===== TARJETAS ===== */
+    .duel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    @media (max-width: 700px) {
+      .duel-grid { grid-template-columns: 1fr; gap: 25px; }
+    }
+    .duel-card {
+      background: rgba(16, 24, 38, 0.85);
+      backdrop-filter: blur(16px);
+      border-radius: 32px;
+      padding: 24px 20px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      color: #f0f4ff;
+    }
+    .duel-card.sushi { border-top: 4px solid #3b82f6; }
+    .duel-card.hotcakes { border-top: 4px solid #fbbf24; }
+    .duel-card .emoji-big { font-size: 2.8rem; margin-bottom: 8px; }
+    .duel-card h3 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: #ffffff;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+    }
+    .winner-badge {
+      background: #fbbf24;
+      color: #0a0e17;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 14px;
+      border-radius: 40px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .subtitle {
+      color: #c8d6e5;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    }
+    .ingredient-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 10px 0 16px;
+    }
+    .ingredient-tags span {
+      background: rgba(255,255,255,0.10);
+      padding: 4px 14px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #e8edf5;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.05);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+    }
+    .duel-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px 15px;
+      background: rgba(0,0,0,0.45);
+      padding: 14px 16px;
+      border-radius: 20px;
+      margin-top: 12px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .duel-stats .stat-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      padding: 3px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: #e8edf5;
+    }
+    .duel-stats .stat-item:last-child { border-bottom: none; }
+    .stat-item .label { color: #b0c4de; }
+    .stat-item .value.blue { color: #74b9ff; font-weight: 700; }
+    .stat-item .value.gold { color: #fbbf24; font-weight: 700; }
+    .extra-info {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 20px;
+      background: rgba(0,0,0,0.30);
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: 1px solid transparent;
+      color: #d0dcee;
+    }
+    .extra-info:hover { border-color: rgba(255,255,255,0.15); background: rgba(0,0,0,0.45); }
+    .extra-detail {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, padding 0.3s ease;
+      padding: 0 10px;
+    }
+    .extra-detail.open { max-height: 200px; padding: 14px 10px 0; }
+    .extra-detail p {
+      color: #d0dcee;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      border-left: 3px solid #4f9cf7;
+      padding-left: 14px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    /* ===== BIOMOLÉCULAS ===== */
+    .biomol-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 25px;
+      margin: 30px 0;
+    }
+    .biomol-card-flip {
+      perspective: 800px;
+      height: 250px;
+      cursor: pointer;
+    }
+    .biomol-card-flip .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s cubic-bezier(0.23,1,0.32,1);
+      transform-style: preserve-3d;
+    }
+    .biomol-card-flip.flipped .flip-inner { transform: rotateY(180deg); }
+    .biomol-card-flip .flip-front,
+    .biomol-card-flip .flip-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 28px;
+      padding: 20px 18px;
+      background: rgba(16, 24, 38, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: #f0f4ff;
+    }
+    .biomol-card-flip .flip-back {
+      transform: rotateY(180deg);
+      background: rgba(26, 38, 60, 0.92);
+      border-color: rgba(79,156,247,0.3);
+    }
+    .biomol-card-flip .icon { font-size: 2.6rem; margin-bottom: 6px; }
+    .biomol-card-flip h4 { font-size: 1.4rem; font-weight: 700; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+    .biomol-card-flip .sub { color: #b0c4de; font-size: 0.9rem; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
+    .flip-back ul {
+      list-style: none;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: #d0dcee;
+    }
+    .flip-back ul li::before { content: "✦ "; color: #60a5fa; }
+    .flip-back .risk {
+      margin-top: 10px;
+      background: rgba(248,113,113,0.15);
+      padding: 6px 14px;
+      border-radius: 40px;
+      color: #fca5a5;
+      font-size: 0.8rem;
+      border: 1px solid rgba(248,113,113,0.2);
+    }
+
+    /* ===== CURIOSIDADES ===== */
+    .curiosity-box {
+      background: rgba(16, 24, 38, 0.70);
+      backdrop-filter: blur(12px);
+      border-radius: 32px;
+      padding: 25px 25px;
+      margin: 30px 0;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .curiosity-box p {
+      font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+      color: #e8edf5;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+    }
+    .curiosity-box .curiosity-text {
+      font-weight: 700;
+      background: linear-gradient(135deg,#fbbf24,#f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .btn-curiosity {
+      margin-top: 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 10px 28px;
+      border-radius: 60px;
+      color: #f0f4ff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      backdrop-filter: blur(4px);
+      font-size: 0.95rem;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+    }
+    .btn-curiosity:hover { background: rgba(79,156,247,0.2); border-color: #4f9cf7; box-shadow: 0 0 30px rgba(79,156,247,0.2); }
+
+    /* ===== CONCLUSIÓN ===== */
+    .conclusion-box {
+      background: rgba(16, 24, 38, 0.80);
+      backdrop-filter: blur(16px);
+      border-radius: 40px;
+      padding: 35px 25px;
+      margin: 40px 0 30px;
+      border: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+    .conclusion-box h2 {
+      font-size: clamp(1.9rem, 5vw, 2.6rem);
+      margin-bottom: 15px;
+      color: #f0f4ff;
+      text-shadow: 0 0 40px rgba(79,156,247,0.2);
+    }
+    .conclusion-box .highlight-blue { color: #74b9ff; font-weight: 700; }
+    .conclusion-box .highlight-gold { color: #fbbf24; font-weight: 700; }
+    .conclusion-box p {
+      color: #d0dcee;
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto 15px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+    }
+    .conclusion-box .lema {
+      font-size: clamp(1.3rem, 3vw, 1.6rem);
+      font-weight: 800;
+      background: linear-gradient(135deg,#60a5fa,#fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-top: 15px;
+    }
+
+    /* ===== BOTÓN DE JUEGO ===== */
+    .game-cta {
+      text-align: center;
+      margin: 30px 0 20px;
+    }
+    .game-cta .btn-jugar {
+      background: linear-gradient(135deg,#fbbf24,#f59e0b);
+      color: #0a0e17;
+      border: none;
+      padding: 18px 45px;
+      border-radius: 60px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 0 50px rgba(251,191,36,0.5);
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.15);
+    }
+    .game-cta .btn-jugar:hover { transform: scale(1.05); box-shadow: 0 0 70px rgba(251,191,36,0.8); }
+    .game-cta .btn-jugar i { font-size: 2rem; }
+    .game-cta .sub-cta {
+      color: #b0c4de;
+      margin-top: 12px;
+      font-size: 1rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    /* ===== FOOTER (solo el año y créditos mínimos) ===== */
+    .footer {
+      text-align: center;
+      padding: 20px 20px 10px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      color: #7a8aa0;
+      font-size: 0.85rem;
+    }
+    .footer i { color: #60a5fa; margin: 0 4px; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .duel-stats { grid-template-columns: 1fr; gap: 3px; }
+      .hero h1 { font-size: 2.6rem; }
+      .conclusion-box { padding: 25px 18px; }
+      .duel-card { padding: 18px 16px; }
+      .biomol-card-flip { height: 220px; }
+      .hero { min-height: 80vh; }
+      .btn-interact { padding: 12px 24px; font-size: 0.95rem; }
+      .game-cta .btn-jugar { padding: 14px 28px; font-size: 1.2rem; }
+      .hero-meta { font-size: 0.95rem; gap: 10px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-image"></div>
+  <div class="bg-overlay"></div>
+  <div class="floating-shapes">
+    <div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape tri"></div>
+  </div>
+  <canvas id="particles-canvas"></canvas>
+
+  <div class="main-wrapper">
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero-badge"><i class="fas fa-flask"></i> Ficha biomolecular</div>
+      <h1><span class="highlight-sushi">Sushi</span> vs <span class="highlight-hot">Hot-Cakes</span></h1>
+      <p>La energía del mar contra la fuerza de la tierra.<br />Descubre qué esconden estos platillos a nivel molecular.</p>
+      <div class="hero-meta">
+        <span><i class="fas fa-users"></i> <strong>Lizbeth · Yair · Marco · Iris</strong></span>
+        <span><i class="fas fa-tag"></i> Grupo 602</span>
+      </div>
+      <button class="btn-interact" id="btnHeroMagic"><i class="fas fa-wand-magic-sparkles"></i> Dato sorpresa</button>
+    </section>
+
+    <!-- DUELO -->
+    <h2 class="section-title">⚔️ El duelo de los sabores</h2>
+    <p class="section-sub">Dos mundos, un mismo objetivo: nutrir tu cuerpo.</p>
+    <div class="duel-grid">
+      <div class="duel-card sushi">
+        <div class="emoji-big">🍣</div>
+        <h3>Sushi</h3>
+        <div class="subtitle">Arroz · Salmón · Aguacate · Pepino · Alga Nori</div>
+        <div class="ingredient-tags"><span>Almidón</span><span>Omega-3</span><span>Fibra</span><span>Yodo</span></div>
+        <div class="duel-stats">
+          <div class="stat-item"><span class="label">Energía</span><span class="value blue">350 kcal</span></div>
+          <div class="stat-item"><span class="label">Carbohidratos</span><span class="value blue">52 g</span></div>
+          <div class="stat-item"><span class="label">Proteínas</span><span class="value blue">18 g</span></div>
+          <div class="stat-item"><span class="label">Grasas totales</span><span class="value blue">8 g</span></div>
+          <div class="stat-item"><span class="label">Fibra</span><span class="value blue">3 g</span></div>
+          <div class="stat-item"><span class="label">Azúcares</span><span class="value blue">4 g</span></div>
+          <div class="stat-item"><span class="label">Sodio</span><span class="value blue">580 mg</span></div>
+          <div class="stat-item"><span class="label">Grasas sat.</span><span class="value blue">1.5 g</span></div>
+        </div>
+        <div class="extra-info" data-target="extraSushi"><i class="fas fa-chevron-down"></i> <span>Ver más</span></div>
+        <div class="extra-detail" id="extraSushi"><p><i class="fas fa-fish" style="color:#60a5fa;"></i> El salmón es rico en omega-3 (EPA y DHA), que ayudan a reducir la inflamación y protegen el corazón. El alga nori aporta yodo esencial para la tiroides.</p></div>
+      </div>
+      <div class="duel-card hotcakes">
+        <div class="emoji-big">🥞</div>
+        <h3>Hot-Cakes <span class="winner-badge">+fibra</span></h3>
+        <div class="subtitle">Avena · Plátano · Fresa · Yogurt · Miel</div>
+        <div class="ingredient-tags"><span>Fibra</span><span>Calcio</span><span>Proteínas</span><span>Antioxidantes</span></div>
+        <div class="duel-stats">
+          <div class="stat-item"><span class="label">Energía</span><span class="value gold">420 kcal</span></div>
+          <div class="stat-item"><span class="label">Carbohidratos</span><span class="value gold">68 g</span></div>
+          <div class="stat-item"><span class="label">Proteínas</span><span class="value gold">16 g</span></div>
+          <div class="stat-item"><span class="label">Grasas totales</span><span class="value gold">11 g</span></div>
+          <div class="stat-item"><span class="label">Fibra</span><span class="value gold">6 g</span></div>
+          <div class="stat-item"><span class="label">Azúcares</span><span class="value gold">26 g</span></div>
+          <div class="stat-item"><span class="label">Sodio</span><span class="value gold">210 mg</span></div>
+          <div class="stat-item"><span class="label">Grasas sat.</span><span class="value gold">3 g</span></div>
+        </div>
+        <div class="extra-info" data-target="extraHot"><i class="fas fa-chevron-down"></i> <span>Ver más</span></div>
+        <div class="extra-detail" id="extraHot"><p><i class="fas fa-seedling" style="color:#fbbf24;"></i> La avena es una fuente de fibra soluble que ayuda a controlar el colesterol y la glucosa. Las fresas aportan vitamina C y antioxidantes.</p></div>
+      </div>
+    </div>
+
+    <!-- BIOMOLÉCULAS -->
+    <h2 class="section-title">🦸 Los 5 superhéroes biomoleculares</h2>
+    <p class="section-sub">Toca cada tarjeta para descubrir su misión.</p>
+    <div class="biomol-grid">
+      <div class="biomol-card-flip" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front"><div class="icon">⚡</div><h4>Carbohidratos</h4><div class="sub">Los Energéticos</div></div>
+          <div class="flip-back"><ul><li><strong>Sushi:</strong> Almidón de arroz → energía inmediata</li><li><strong>Hot-Cakes:</strong> Almidón de avena + azúcares → energía sostenida</li></ul><div class="risk">⚠️ Deficiencia: fatiga, falta de concentración</div></div>
+        </div>
+      </div>
+      <div class="biomol-card-flip" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front"><div class="icon">💪</div><h4>Proteínas</h4><div class="sub">Los Constructores</div></div>
+          <div class="flip-back"><ul><li><strong>Sushi:</strong> Salmón y aguacate → aminoácidos esenciales</li><li><strong>Hot-Cakes:</strong> Huevo y yogurt → caseína, albúmina</li></ul><div class="risk">⚠️ Deficiencia: debilidad, bajada de defensas</div></div>
+        </div>
+      </div>
+      <div class="biomol-card-flip" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front"><div class="icon">❤️</div><h4>Lípidos</h4><div class="sub">Los Protectores</div></div>
+          <div class="flip-back"><ul><li><strong>Sushi:</strong> Omega-3 (EPA/DHA) → protege el corazón</li><li><strong>Hot-Cakes:</strong> Triglicéridos → absorción de vitaminas</li></ul><div class="risk">⚠️ Deficiencia: piel seca, alteraciones hormonales</div></div>
+        </div>
+      </div>
+      <div class="biomol-card-flip" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front"><div class="icon">🍊</div><h4>Vitaminas</h4><div class="sub">Los Reguladores</div></div>
+          <div class="flip-back"><ul><li><strong>Sushi:</strong> A, D, E, K, complejo B (B12)</li><li><strong>Hot-Cakes:</strong> A, C, E, K, complejo B</li></ul><div class="risk">⚠️ Deficiencia: anemia, problemas de visión</div></div>
+        </div>
+      </div>
+      <div class="biomol-card-flip" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front"><div class="icon">🧂</div><h4>Minerales</h4><div class="sub">Los Conductores</div></div>
+          <div class="flip-back"><ul><li><strong>Sushi:</strong> Yodo, selenio, hierro, magnesio</li><li><strong>Hot-Cakes:</strong> Calcio, potasio, fósforo, zinc</li></ul><div class="risk">⚠️ Deficiencia: calambres, huesos frágiles</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CURIOSIDADES -->
+    <div class="curiosity-box">
+      <p><i class="fas fa-lightbulb" style="color:#fbbf24; margin-right:10px;"></i> ¿Sabías que... <span class="curiosity-text" id="curiosityText">el sushi contiene yodo que ayuda a la tiroides?</span></p>
+      <button class="btn-curiosity" id="btnCuriosity"><i class="fas fa-sync-alt"></i> Cambiar dato</button>
+    </div>
+
+    <!-- CONCLUSIÓN -->
+    <div class="conclusion-box">
+      <h2>🎯 El equilibrio es la clave</h2>
+      <p>El <span class="highlight-blue">Sushi</span> te da la frescura del mar, protegiendo tu corazón con grasas inteligentes.<br />Los <span class="highlight-gold">Hot-Cakes</span> te dan la calidez de la tierra, llenándote de fibra y energía duradera.</p>
+      <p><strong>La verdadera salud no está en un solo platillo, sino en la variedad.</strong><br />Al entender qué come cada biomolécula, podemos construir un menú diario que nos dé energía, nos repare, nos proteja y nos haga sentir increíbles.</p>
+      <div class="lema"><i class="fas fa-quote-left" style="margin-right:10px;opacity:0.4;"></i>Cada bocado es una decisión. ¿Construyes o desgastas?<i class="fas fa-quote-right" style="margin-left:10px;opacity:0.4;"></i></div>
+    </div>
+
+    <!-- BOTÓN PARA IR AL JUEGO (SIN NOMBRES NI GRUPO AL FINAL) -->
+    <div class="game-cta">
+      <a href="game.html" target="_blank" class="btn-jugar">
+        <i class="fas fa-gamepad"></i> ¡Reto del Saber! Juega y gana sushi
+      </a>
+      <p class="sub-cta">Demuestra lo que aprendiste y reclama tu recompensa</p>
+    </div>
+
+    <!-- FOOTER SIMPLE -->
+    <footer class="footer">
+      <p><i class="fas fa-utensils"></i> Ficha biomolecular · 2026</p>
+    </footer>
+  </div>
+
+  <script>
+    // (El mismo JavaScript que tenías antes, sin cambios)
+    document.addEventListener('DOMContentLoaded', function() {
+      // Partículas
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      const PARTICLE_COUNT = 60;
+      function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 3 + 1;
+          this.speedX = (Math.random() - 0.5) * 0.3;
+          this.speedY = (Math.random() - 0.5) * 0.3;
+          this.opacity = Math.random() * 0.4 + 0.1;
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+          if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,255,255,${this.opacity})`;
+          ctx.fill();
+        }
+      }
+      for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+      function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animateParticles);
+      }
+      animateParticles();
+
+      // Parallax hero
+      const hero = document.getElementById('hero');
+      document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 8;
+        const y = (e.clientY / window.innerHeight - 0.5) * 8;
+        hero.style.transform = `translate(${x}px, ${y}px)`;
+      });
+
+      // Extra info toggle
+      document.querySelectorAll('.extra-info').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const targetId = this.dataset.target;
+          const detail = document.getElementById(targetId);
+          if (detail) {
+            detail.classList.toggle('open');
+            const icon = this.querySelector('i');
+            icon.className = detail.classList.contains('open') ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
+          }
+        });
+      });
+
+      // Botón dato sorpresa
+      document.getElementById('btnHeroMagic').addEventListener('click', () => {
+        const data = [
+          '🍣 El sushi nació en el sudeste asiático como método de conservación del pescado.',
+          '🥞 Los hot-cakes con avena ayudan a mantener la saciedad por más tiempo.',
+          '🧂 El alga nori del sushi es una de las fuentes más ricas en yodo natural.',
+          '🍓 Las fresas de los hot-cakes aportan más vitamina C que una naranja (por peso).',
+          '🐟 El salmón del sushi contiene astaxantina, un potente antioxidante que le da su color rosado.'
+        ];
+        alert('✨ Dato sorpresa: ' + data[Math.floor(Math.random() * data.length)]);
+      });
+
+      // Curiosidades
+      const btnCuriosity = document.getElementById('btnCuriosity');
+      const curiosityText = document.getElementById('curiosityText');
+      const curiosities = [
+        'el sushi contiene yodo que ayuda a la tiroides.',
+        'los hot-cakes de avena tienen el doble de fibra que el sushi.',
+        'el aguacate del sushi es rico en grasas monoinsaturadas saludables.',
+        'la miel de los hot-cakes es un edulcorante natural con propiedades antibacterianas.',
+        'el salmón del sushi es una de las mejores fuentes de vitamina D.',
+        'la canela (si se añade a los hot-cakes) ayuda a regular el azúcar en sangre.'
+      ];
+      btnCuriosity.addEventListener('click', () => {
+        curiosityText.textContent = curiosities[Math.floor(Math.random() * curiosities.length)];
+      });
+    });
+  </script>
+</body>
+</html>
