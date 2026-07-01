@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-  <title>Sushi vs Hot-Cakes · Presentación</title>
+  <title>Sushi Cake · Experiencia</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <style>
-    /* ===== RESET ===== */
+    /* ===== RESET Y BASE ===== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -15,24 +15,24 @@
       overflow-x: hidden;
       min-height: 100vh;
     }
-    /* ===== FONDO ===== */
-    .bg-image {
+    /* ===== FONDO PRINCIPAL ===== */
+    .bg-main {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: -2;
       background: url('https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
-      filter: brightness(0.35) saturate(1.2);
+      filter: brightness(0.30) saturate(1.4);
     }
     .bg-overlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: -1;
-      background: radial-gradient(circle at 30% 40%, rgba(79,156,247,0.25), rgba(251,191,36,0.15) 80%);
+      background: radial-gradient(circle at 30% 40%, rgba(79,156,247,0.20), rgba(251,191,36,0.10) 80%);
       pointer-events: none;
     }
-    /* ===== FORMAS FLOTANTES ===== */
+    /* ===== ELEMENTOS FLOTANTES ===== */
     .floating-shapes {
       position: fixed;
       top: 0; left: 0;
@@ -45,24 +45,24 @@
       position: absolute;
       border-radius: 50%;
       opacity: 0.10;
-      animation: floatShape 20s infinite alternate ease-in-out;
+      animation: floatShape 22s infinite alternate ease-in-out;
     }
-    .shape:nth-child(1) { width: 300px; height: 300px; background: radial-gradient(circle,#4f9cf7,transparent); top:-5%; left:-5%; animation-duration:25s; }
-    .shape:nth-child(2) { width: 400px; height: 400px; background: radial-gradient(circle,#fbbf24,transparent); bottom:-10%; right:-10%; animation-duration:30s; animation-delay:-5s; }
-    .shape:nth-child(3) { width: 200px; height: 200px; background: radial-gradient(circle,#f472b6,transparent); top:50%; left:70%; animation-duration:18s; animation-delay:-10s; }
-    .shape:nth-child(4) { width: 150px; height: 150px; background: radial-gradient(circle,#34d399,transparent); bottom:20%; left:10%; animation-duration:22s; animation-delay:-3s; }
+    .shape:nth-child(1) { width: 400px; height: 400px; background: radial-gradient(circle,#4f9cf7,transparent); top:-10%; left:-8%; animation-duration:24s; }
+    .shape:nth-child(2) { width: 500px; height: 500px; background: radial-gradient(circle,#fbbf24,transparent); bottom:-15%; right:-10%; animation-duration:30s; animation-delay:-5s; }
+    .shape:nth-child(3) { width: 250px; height: 250px; background: radial-gradient(circle,#f472b6,transparent); top:40%; left:80%; animation-duration:18s; animation-delay:-9s; }
+    .shape:nth-child(4) { width: 200px; height: 200px; background: radial-gradient(circle,#34d399,transparent); bottom:20%; left:5%; animation-duration:22s; animation-delay:-3s; }
     .shape.tri {
       border-radius: 0;
       clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
       background: linear-gradient(135deg,#a78bfa,transparent);
-      width: 180px; height: 180px; top:15%; right:5%;
-      animation-duration:28s; opacity:0.06;
+      width: 220px; height: 220px; top:10%; right:2%;
+      animation-duration:28s; opacity:0.07;
     }
     @keyframes floatShape {
       0% { transform: translate(0,0) scale(1) rotate(0deg); }
-      33% { transform: translate(30px,-40px) scale(1.1) rotate(5deg); }
-      66% { transform: translate(-20px,20px) scale(0.9) rotate(-3deg); }
-      100% { transform: translate(10px,-10px) scale(1.05) rotate(2deg); }
+      33% { transform: translate(45px,-55px) scale(1.1) rotate(7deg); }
+      66% { transform: translate(-35px,35px) scale(0.9) rotate(-5deg); }
+      100% { transform: translate(20px,-20px) scale(1.05) rotate(3deg); }
     }
     /* ===== PARTÍCULAS ===== */
     #particles-canvas {
@@ -76,7 +76,7 @@
     .main-wrapper {
       position: relative;
       z-index: 2;
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 20px 20px 40px;
     }
@@ -88,53 +88,71 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 30px 20px;
-      backdrop-filter: blur(2px);
+      padding: 40px 20px;
       border-radius: 60px;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
       transition: transform 0.1s ease-out;
+      background: rgba(10,14,23,0.60);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.05);
     }
     .hero-badge {
       background: rgba(79,156,247,0.25);
       backdrop-filter: blur(8px);
-      padding: 10px 28px;
+      padding: 12px 32px;
       border-radius: 60px;
       font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: 2px;
+      font-size: 1rem;
+      letter-spacing: 3px;
       text-transform: uppercase;
       border: 1px solid rgba(79,156,247,0.5);
       color: #a0c4ff;
       margin-bottom: 25px;
-      box-shadow: 0 0 30px rgba(79,156,247,0.25);
+      box-shadow: 0 0 40px rgba(79,156,247,0.3);
       text-shadow: 0 0 10px rgba(0,0,0,0.5);
+      z-index: 2;
     }
     .hero h1 {
-      font-size: clamp(2.8rem, 12vw, 5.5rem);
+      font-size: clamp(3.8rem, 14vw, 7rem);
       font-weight: 900;
       line-height: 1.1;
       margin-bottom: 15px;
-      text-shadow: 0 0 60px rgba(79,156,247,0.4), 0 4px 20px rgba(0,0,0,0.8);
+      text-shadow: 0 0 80px rgba(79,156,247,0.5), 0 4px 30px rgba(0,0,0,0.8);
+      z-index: 2;
     }
-    .hero h1 .highlight-sushi { background: linear-gradient(135deg,#60a5fa,#3b82f6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-    .hero h1 .highlight-hot { background: linear-gradient(135deg,#fbbf24,#f59e0b); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .hero h1 .highlight-sushi {
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero h1 .highlight-cake {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     .hero p {
-      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-      max-width: 700px;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      max-width: 800px;
       color: #e8edf5;
       margin-bottom: 25px;
-      text-shadow: 0 4px 20px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.7);
+      text-shadow: 0 4px 25px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.7);
       font-weight: 400;
       padding: 0 10px;
+      z-index: 2;
     }
     .hero-meta {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 15px 30px;
-      font-size: 1.05rem;
+      gap: 15px 35px;
+      font-size: 1.1rem;
       color: #c8d6e5;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.9);
+      text-shadow: 0 2px 15px rgba(0,0,0,0.9);
+      z-index: 2;
     }
     .hero-meta i { color: #60a5fa; margin-right: 6px; }
     .hero-meta strong { color: #ffffff; font-weight: 700; }
@@ -142,71 +160,75 @@
       margin-top: 30px;
       background: linear-gradient(135deg,#4f9cf7,#7c3aed);
       border: none;
-      padding: 14px 32px;
+      padding: 16px 38px;
       border-radius: 60px;
       font-weight: 700;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       color: #fff;
       cursor: pointer;
-      box-shadow: 0 0 40px rgba(79,156,247,0.5);
+      box-shadow: 0 0 50px rgba(79,156,247,0.5);
       transition: all 0.3s ease;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       border: 1px solid rgba(255,255,255,0.2);
-      text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+      text-shadow: 0 1px 10px rgba(0,0,0,0.4);
+      z-index: 2;
     }
-    .btn-interact:hover { transform: scale(1.05) translateY(-4px); box-shadow: 0 0 60px rgba(79,156,247,0.8); }
+    .btn-interact:hover { transform: scale(1.05) translateY(-4px); box-shadow: 0 0 70px rgba(79,156,247,0.8); }
     .btn-interact:active { transform: scale(0.95); }
 
-    /* ===== SECCIONES ===== */
+    /* ===== SECCIONES GENERALES ===== */
     .section-title {
-      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
       font-weight: 800;
       text-align: center;
-      margin: 50px 0 15px;
-      text-shadow: 0 0 40px rgba(79,156,247,0.25), 0 4px 20px rgba(0,0,0,0.8);
+      margin: 60px 0 15px;
+      text-shadow: 0 0 50px rgba(79,156,247,0.3), 0 4px 30px rgba(0,0,0,0.8);
       color: #f0f4ff;
     }
     .section-sub {
       text-align: center;
       color: #d0dcee;
-      font-size: clamp(1.05rem, 2vw, 1.25rem);
-      margin-bottom: 35px;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.9);
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      margin-bottom: 40px;
+      text-shadow: 0 2px 15px rgba(0,0,0,0.9);
       font-weight: 400;
     }
-    /* ===== TARJETAS ===== */
+
+    /* ===== DUELO DE SABORES (sin fondos) ===== */
     .duel-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 25px;
-      margin-bottom: 30px;
+      gap: 30px;
+      margin-bottom: 40px;
     }
-    @media (max-width: 700px) {
-      .duel-grid { grid-template-columns: 1fr; gap: 25px; }
-    }
+    @media (max-width: 700px) { .duel-grid { grid-template-columns: 1fr; } }
     .duel-card {
-      background: rgba(16, 24, 38, 0.85);
+      background: rgba(16, 24, 38, 0.80);
       backdrop-filter: blur(16px);
       border-radius: 32px;
-      padding: 24px 20px;
-      border: 1px solid rgba(255,255,255,0.12);
+      padding: 28px 24px;
+      border: 1px solid rgba(255,255,255,0.10);
       box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-      transition: all 0.3s;
+      transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+      color: #f0f4ff;
       position: relative;
       overflow: hidden;
-      color: #f0f4ff;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .duel-card.sushi { border-top: 4px solid #3b82f6; }
     .duel-card.hotcakes { border-top: 4px solid #fbbf24; }
-    .duel-card .emoji-big { font-size: 2.8rem; margin-bottom: 8px; }
+    .duel-card .emoji-big { font-size: 3.2rem; margin-bottom: 10px; }
     .duel-card h3 {
-      font-size: 1.9rem;
+      font-size: 2rem;
       font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
       color: #ffffff;
       text-shadow: 0 2px 12px rgba(0,0,0,0.7);
@@ -262,7 +284,6 @@
       border-bottom: 1px solid rgba(255,255,255,0.05);
       color: #e8edf5;
     }
-    .duel-stats .stat-item:last-child { border-bottom: none; }
     .stat-item .label { color: #b0c4de; }
     .stat-item .value.blue { color: #74b9ff; font-weight: 700; }
     .stat-item .value.gold { color: #fbbf24; font-weight: 700; }
@@ -297,7 +318,84 @@
       text-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
 
-    /* ===== BIOMOLÉCULAS ===== */
+    /* ===== SHOWROOM (dos imágenes principales) ===== */
+    .showroom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin: 30px 0 50px;
+      position: relative;
+    }
+    @media (max-width: 700px) {
+      .showroom-grid { grid-template-columns: 1fr; gap: 25px; }
+    }
+    .showroom-card {
+      background: rgba(16, 24, 38, 0.70);
+      backdrop-filter: blur(14px);
+      border-radius: 32px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+      transition: transform 0.5s cubic-bezier(0.23,1,0.32,1), box-shadow 0.5s ease;
+      position: relative;
+      transform-style: preserve-3d;
+      perspective: 800px;
+      cursor: default;
+    }
+    .showroom-card:hover {
+      transform: translateY(-18px) rotateX(3deg) rotateY(3deg);
+      box-shadow: 0 35px 80px rgba(0,0,0,0.8);
+      border-color: rgba(255,255,255,0.2);
+    }
+    .showroom-card .img-wrapper {
+      position: relative;
+      overflow: hidden;
+      height: 300px;
+      background: #111b2a;
+    }
+    .showroom-card .img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .showroom-card:hover .img-wrapper img {
+      transform: scale(1.08);
+    }
+    .showroom-card .badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(8px);
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(255,255,255,0.15);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 2;
+    }
+    .badge.sushi-badge { border-color: #60a5fa; color: #60a5fa; }
+    .badge.hot-badge { border-color: #fbbf24; color: #fbbf24; }
+    .showroom-card .card-body {
+      padding: 20px 20px 24px;
+      text-align: center;
+    }
+    .showroom-card .card-body h4 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+    }
+
+    /* ===== BIOMOLÉCULAS (versión original corregida) ===== */
     .biomol-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -364,13 +462,21 @@
       background: rgba(16, 24, 38, 0.70);
       backdrop-filter: blur(12px);
       border-radius: 32px;
-      padding: 25px 25px;
+      padding: 30px 30px;
       margin: 30px 0;
       text-align: center;
       border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
+    .curiosity-box > * { position: relative; z-index: 1; }
     .curiosity-box p {
-      font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
       color: #e8edf5;
       text-shadow: 0 2px 12px rgba(0,0,0,0.7);
     }
@@ -399,17 +505,20 @@
 
     /* ===== CONCLUSIÓN ===== */
     .conclusion-box {
-      background: rgba(16, 24, 38, 0.80);
+      background: rgba(16, 24, 38, 0.75);
       backdrop-filter: blur(16px);
       border-radius: 40px;
-      padding: 35px 25px;
+      padding: 40px 30px;
       margin: 40px 0 30px;
       border: 1px solid rgba(255,255,255,0.08);
       text-align: center;
       box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      position: relative;
+      overflow: hidden;
     }
+    .conclusion-box > * { position: relative; z-index: 1; }
     .conclusion-box h2 {
-      font-size: clamp(1.9rem, 5vw, 2.6rem);
+      font-size: clamp(2rem, 5vw, 2.8rem);
       margin-bottom: 15px;
       color: #f0f4ff;
       text-shadow: 0 0 40px rgba(79,156,247,0.2);
@@ -464,7 +573,7 @@
       text-shadow: 0 2px 10px rgba(0,0,0,0.8);
     }
 
-    /* ===== FOOTER (solo el año y créditos mínimos) ===== */
+    /* ===== FOOTER ===== */
     .footer {
       text-align: center;
       padding: 20px 20px 10px;
@@ -477,19 +586,202 @@
     /* ===== RESPONSIVE ===== */
     @media (max-width: 600px) {
       .duel-stats { grid-template-columns: 1fr; gap: 3px; }
-      .hero h1 { font-size: 2.6rem; }
+      .hero h1 { font-size: 2.8rem; }
       .conclusion-box { padding: 25px 18px; }
-      .duel-card { padding: 18px 16px; }
+      .duel-card { padding: 20px 16px; min-height: 280px; }
       .biomol-card-flip { height: 220px; }
-      .hero { min-height: 80vh; }
+      .hero { min-height: 80vh; padding: 20px 15px; }
       .btn-interact { padding: 12px 24px; font-size: 0.95rem; }
       .game-cta .btn-jugar { padding: 14px 28px; font-size: 1.2rem; }
       .hero-meta { font-size: 0.95rem; gap: 10px 20px; }
+      .showroom-card .img-wrapper { height: 200px; }
+      .showroom-grid { gap: 20px; }
+      .curiosity-box { padding: 20px; }
+    }
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== PESTAÑAS MEJORADAS (más neutras y elegantes) ===== */
+    .tab-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Pestaña Sushi (derecha, arriba) */
+    .tab-sushi {
+      position: absolute;
+      top: 25%;
+      right: 0;
+      pointer-events: auto;
+      transform: translateX(calc(100% - 70px));
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      background: rgba(16, 24, 38, 0.92);
+      backdrop-filter: blur(16px);
+      border-radius: 60px 0 0 60px;
+      border: 2px solid rgba(79, 156, 247, 0.4);
+      border-right: none;
+      box-shadow: -4px 0 30px rgba(79, 156, 247, 0.15);
+      padding: 14px 18px 14px 22px;
+      gap: 12px;
+      max-width: 85vw;
+    }
+    .tab-sushi.open {
+      transform: translateX(0);
+      box-shadow: -8px 0 40px rgba(79, 156, 247, 0.3);
+      border-color: rgba(79, 156, 247, 0.8);
+    }
+    .tab-sushi .tab-icon {
+      font-size: 2.4rem;
+      line-height: 1;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 8px rgba(79, 156, 247, 0.2));
+    }
+    .tab-sushi .tab-label {
+      font-weight: 700;
+      color: #60a5fa;
+      white-space: nowrap;
+      font-size: 1rem;
+      text-shadow: 0 0 15px rgba(79, 156, 247, 0.15);
+    }
+    .tab-sushi .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      padding: 4px 10px;
+      max-width: 300px;
+    }
+    .tab-sushi.open .tab-content {
+      display: flex;
+      animation: fadeSlide 0.3s ease;
+    }
+    .tab-sushi .tab-content img {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(79, 156, 247, 0.15);
+      max-height: 180px;
+      object-fit: cover;
+    }
+    .tab-sushi .tab-content p {
+      color: #d0dcee;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    /* Pestaña Hot-Cake (izquierda, abajo) */
+    .tab-hotcake {
+      position: absolute;
+      bottom: 25%;
+      left: 0;
+      pointer-events: auto;
+      transform: translateX(calc(-100% + 70px));
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      background: rgba(16, 24, 38, 0.92);
+      backdrop-filter: blur(16px);
+      border-radius: 0 60px 60px 0;
+      border: 2px solid rgba(251, 191, 36, 0.4);
+      border-left: none;
+      box-shadow: 4px 0 30px rgba(251, 191, 36, 0.15);
+      padding: 14px 22px 14px 18px;
+      gap: 12px;
+      max-width: 85vw;
+      flex-direction: row-reverse;
+    }
+    .tab-hotcake.open {
+      transform: translateX(0);
+      box-shadow: 8px 0 40px rgba(251, 191, 36, 0.3);
+      border-color: rgba(251, 191, 36, 0.8);
+    }
+    .tab-hotcake .tab-icon {
+      font-size: 2.4rem;
+      line-height: 1;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.2));
+    }
+    .tab-hotcake .tab-label {
+      font-weight: 700;
+      color: #fbbf24;
+      white-space: nowrap;
+      font-size: 1rem;
+      text-shadow: 0 0 15px rgba(251, 191, 36, 0.15);
+    }
+    .tab-hotcake .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      padding: 4px 10px;
+      max-width: 300px;
+    }
+    .tab-hotcake.open .tab-content {
+      display: flex;
+      animation: fadeSlide 0.3s ease;
+    }
+    .tab-hotcake .tab-content img {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(251, 191, 36, 0.15);
+      max-height: 180px;
+      object-fit: cover;
+    }
+    .tab-hotcake .tab-content p {
+      color: #d0dcee;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .tab-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0 4px;
+      transition: color 0.2s, transform 0.2s;
+      flex-shrink: 0;
+    }
+    .tab-close:hover { color: #f87171; transform: scale(1.1); }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Ajustes responsive para pestañas */
+    @media (max-width: 600px) {
+      .tab-sushi, .tab-hotcake {
+        padding: 10px 14px;
+        gap: 8px;
+      }
+      .tab-sushi .tab-icon, .tab-hotcake .tab-icon { font-size: 1.8rem; }
+      .tab-sushi .tab-label, .tab-hotcake .tab-label { font-size: 0.85rem; }
+      .tab-sushi .tab-content, .tab-hotcake .tab-content { max-width: 200px; }
+      .tab-sushi .tab-content img, .tab-hotcake .tab-content img { max-height: 120px; }
+      .tab-sushi { top: 15%; }
+      .tab-hotcake { bottom: 15%; }
     }
   </style>
 </head>
 <body>
-  <div class="bg-image"></div>
+  <div class="bg-main"></div>
   <div class="bg-overlay"></div>
   <div class="floating-shapes">
     <div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape tri"></div>
@@ -497,11 +789,14 @@
   <canvas id="particles-canvas"></canvas>
 
   <div class="main-wrapper">
-    <!-- HERO -->
+    <!-- ===== HERO ===== -->
     <section class="hero" id="hero">
-      <div class="hero-badge"><i class="fas fa-flask"></i> Ficha biomolecular</div>
-      <h1><span class="highlight-sushi">Sushi</span> vs <span class="highlight-hot">Hot-Cakes</span></h1>
-      <p>La energía del mar contra la fuerza de la tierra.<br />Descubre qué esconden estos platillos a nivel molecular.</p>
+      <div class="hero-badge"><i class="fas fa-flask"></i> Proyecto Sushi Cake</div>
+      <h1>
+        <span class="highlight-sushi">Sushi</span>
+        <span class="highlight-cake">Cake</span>
+      </h1>
+      <p>La fusión perfecta entre la energía del mar y la dulzura de la tierra.<br />Descubre qué esconden estos platillos a nivel molecular.</p>
       <div class="hero-meta">
         <span><i class="fas fa-users"></i> <strong>Lizbeth · Yair · Marco · Iris</strong></span>
         <span><i class="fas fa-tag"></i> Grupo 602</span>
@@ -509,7 +804,7 @@
       <button class="btn-interact" id="btnHeroMagic"><i class="fas fa-wand-magic-sparkles"></i> Dato sorpresa</button>
     </section>
 
-    <!-- DUELO -->
+    <!-- ===== DUELO ===== -->
     <h2 class="section-title">⚔️ El duelo de los sabores</h2>
     <p class="section-sub">Dos mundos, un mismo objetivo: nutrir tu cuerpo.</p>
     <div class="duel-grid">
@@ -551,7 +846,27 @@
       </div>
     </div>
 
-    <!-- BIOMOLÉCULAS -->
+    <!-- ===== SHOWROOM ===== -->
+    <h2 class="section-title">🍱 Nuestros Platillos</h2>
+    <p class="section-sub">Conoce las variedades que ofrecemos</p>
+    <div class="showroom-grid">
+      <div class="showroom-card animate-on-scroll">
+        <div class="img-wrapper">
+          <img src="https://placehold.co/600x400/1e293b/60a5fa?text=Sushi" alt="Sushi" id="sushi-img-1" />
+          <span class="badge sushi-badge"><i class="fas fa-utensils"></i> Sushi</span>
+        </div>
+        <div class="card-body"><h4>Sushi</h4></div>
+      </div>
+      <div class="showroom-card animate-on-scroll">
+        <div class="img-wrapper">
+          <img src="https://placehold.co/600x400/1e293b/fbbf24?text=Hot-Cake" alt="Hot-Cake" id="hot-img-1" />
+          <span class="badge hot-badge"><i class="fas fa-utensils"></i> Hot-Cake</span>
+        </div>
+        <div class="card-body"><h4>Hot-Cake</h4></div>
+      </div>
+    </div>
+
+    <!-- ===== BIOMOLÉCULAS (corregidas) ===== -->
     <h2 class="section-title">🦸 Los 5 superhéroes biomoleculares</h2>
     <p class="section-sub">Toca cada tarjeta para descubrir su misión.</p>
     <div class="biomol-grid">
@@ -587,13 +902,13 @@
       </div>
     </div>
 
-    <!-- CURIOSIDADES -->
+    <!-- ===== CURIOSIDADES ===== -->
     <div class="curiosity-box">
       <p><i class="fas fa-lightbulb" style="color:#fbbf24; margin-right:10px;"></i> ¿Sabías que... <span class="curiosity-text" id="curiosityText">el sushi contiene yodo que ayuda a la tiroides?</span></p>
       <button class="btn-curiosity" id="btnCuriosity"><i class="fas fa-sync-alt"></i> Cambiar dato</button>
     </div>
 
-    <!-- CONCLUSIÓN -->
+    <!-- ===== CONCLUSIÓN ===== -->
     <div class="conclusion-box">
       <h2>🎯 El equilibrio es la clave</h2>
       <p>El <span class="highlight-blue">Sushi</span> te da la frescura del mar, protegiendo tu corazón con grasas inteligentes.<br />Los <span class="highlight-gold">Hot-Cakes</span> te dan la calidez de la tierra, llenándote de fibra y energía duradera.</p>
@@ -601,7 +916,7 @@
       <div class="lema"><i class="fas fa-quote-left" style="margin-right:10px;opacity:0.4;"></i>Cada bocado es una decisión. ¿Construyes o desgastas?<i class="fas fa-quote-right" style="margin-left:10px;opacity:0.4;"></i></div>
     </div>
 
-    <!-- BOTÓN PARA IR AL JUEGO (SIN NOMBRES NI GRUPO AL FINAL) -->
+    <!-- ===== BOTÓN DE JUEGO ===== -->
     <div class="game-cta">
       <a href="game.html" target="_blank" class="btn-jugar">
         <i class="fas fa-gamepad"></i> ¡Reto del Saber! Juega y gana sushi
@@ -609,20 +924,44 @@
       <p class="sub-cta">Demuestra lo que aprendiste y reclama tu recompensa</p>
     </div>
 
-    <!-- FOOTER SIMPLE -->
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
-      <p><i class="fas fa-utensils"></i> Ficha biomolecular · 2026</p>
+      <p><i class="fas fa-utensils"></i> Sushi Cake · 2026</p>
     </footer>
   </div>
 
+  <!-- ===== PESTAÑAS INTERACTIVAS (Sushi a la derecha, Hot-Cake a la izquierda) ===== -->
+  <div class="tab-container">
+    <!-- Pestaña Sushi (derecha) -->
+    <div class="tab-sushi" id="tabSushi">
+      <div class="tab-icon">🍣</div>
+      <span class="tab-label">Sushi</span>
+      <button class="tab-close" id="closeSushi"><i class="fas fa-times"></i></button>
+      <div class="tab-content">
+        <img src="https://placehold.co/400x250/1e293b/60a5fa?text=Sushi+Extra" alt="Sushi extra" id="sushi-img-2" />
+        <p><strong>Sushi</strong> — Omega-3, yodo y proteínas.</p>
+      </div>
+    </div>
+
+    <!-- Pestaña Hot-Cake (izquierda) -->
+    <div class="tab-hotcake" id="tabHotcake">
+      <div class="tab-icon">🥞</div>
+      <span class="tab-label">Hot-Cake</span>
+      <button class="tab-close" id="closeHotcake"><i class="fas fa-times"></i></button>
+      <div class="tab-content">
+        <img src="https://placehold.co/400x250/1e293b/fbbf24?text=Hot-Cake+Extra" alt="Hot-Cake extra" id="hot-img-2" />
+        <p><strong>Hot-Cake</strong> — Fibra, calcio y energía.</p>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // (El mismo JavaScript que tenías antes, sin cambios)
     document.addEventListener('DOMContentLoaded', function() {
-      // Partículas
+      // ===== PARTÍCULAS =====
       const canvas = document.getElementById('particles-canvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
-      const PARTICLE_COUNT = 60;
+      const PARTICLE_COUNT = 80;
       function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
       window.addEventListener('resize', resizeCanvas);
       resizeCanvas();
@@ -630,10 +969,10 @@
         constructor() {
           this.x = Math.random() * canvas.width;
           this.y = Math.random() * canvas.height;
-          this.size = Math.random() * 3 + 1;
-          this.speedX = (Math.random() - 0.5) * 0.3;
-          this.speedY = (Math.random() - 0.5) * 0.3;
-          this.opacity = Math.random() * 0.4 + 0.1;
+          this.size = Math.random() * 4 + 1.5;
+          this.speedX = (Math.random() - 0.5) * 0.35;
+          this.speedY = (Math.random() - 0.5) * 0.35;
+          this.opacity = Math.random() * 0.5 + 0.15;
         }
         update() {
           this.x += this.speedX;
@@ -656,15 +995,15 @@
       }
       animateParticles();
 
-      // Parallax hero
+      // ===== PARALLAX HERO =====
       const hero = document.getElementById('hero');
       document.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 8;
-        const y = (e.clientY / window.innerHeight - 0.5) * 8;
+        const x = (e.clientX / window.innerWidth - 0.5) * 12;
+        const y = (e.clientY / window.innerHeight - 0.5) * 12;
         hero.style.transform = `translate(${x}px, ${y}px)`;
       });
 
-      // Extra info toggle
+      // ===== EXTRA INFO TOGGLE =====
       document.querySelectorAll('.extra-info').forEach(btn => {
         btn.addEventListener('click', function(e) {
           e.stopPropagation();
@@ -678,7 +1017,7 @@
         });
       });
 
-      // Botón dato sorpresa
+      // ===== BOTÓN DATO SORPRESA =====
       document.getElementById('btnHeroMagic').addEventListener('click', () => {
         const data = [
           '🍣 El sushi nació en el sudeste asiático como método de conservación del pescado.',
@@ -690,7 +1029,7 @@
         alert('✨ Dato sorpresa: ' + data[Math.floor(Math.random() * data.length)]);
       });
 
-      // Curiosidades
+      // ===== CURIOSIDADES =====
       const btnCuriosity = document.getElementById('btnCuriosity');
       const curiosityText = document.getElementById('curiosityText');
       const curiosities = [
@@ -703,6 +1042,50 @@
       ];
       btnCuriosity.addEventListener('click', () => {
         curiosityText.textContent = curiosities[Math.floor(Math.random() * curiosities.length)];
+      });
+
+      // ===== ANIMACIÓN AL SCROLL =====
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -30px 0px' });
+      document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+      // ===== PESTAÑAS INTERACTIVAS =====
+      const tabSushi = document.getElementById('tabSushi');
+      const tabHotcake = document.getElementById('tabHotcake');
+      const closeSushi = document.getElementById('closeSushi');
+      const closeHotcake = document.getElementById('closeHotcake');
+
+      tabSushi.addEventListener('click', function(e) {
+        if (e.target.closest('.tab-close')) return;
+        this.classList.toggle('open');
+        if (tabHotcake.classList.contains('open')) tabHotcake.classList.remove('open');
+      });
+      tabHotcake.addEventListener('click', function(e) {
+        if (e.target.closest('.tab-close')) return;
+        this.classList.toggle('open');
+        if (tabSushi.classList.contains('open')) tabSushi.classList.remove('open');
+      });
+
+      closeSushi.addEventListener('click', function(e) {
+        e.stopPropagation();
+        tabSushi.classList.remove('open');
+      });
+      closeHotcake.addEventListener('click', function(e) {
+        e.stopPropagation();
+        tabHotcake.classList.remove('open');
+      });
+
+      // Cerrar al hacer clic fuera
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.tab-container')) {
+          tabSushi.classList.remove('open');
+          tabHotcake.classList.remove('open');
+        }
       });
     });
   </script>
